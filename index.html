@@ -3,20 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Climbing Plan Web App</title>
+    <title>Climbing Plan Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        form { margin-bottom: 20px; }
+        input, select { padding: 10px; margin: 5px; width: calc(100% - 22px); }
+        button { padding: 10px; width: 100%; }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Climbing Plan</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Plan Your Climb</h2>
-            <p>Welcome to the Climbing Plan web app! Here you can plan your climbing adventures.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Climbing Plan. All rights reserved.</p>
-    </footer>
+    <h1>Climbing Plan Interface</h1>
+    <form id="session-form">
+        <h2>Add Session</h2>
+        <input type="text" id="session-title" placeholder="Session Title" required>
+        <input type="date" id="session-date" required>
+        <input type="number" id="session-duration" placeholder="Duration (minutes)" required>
+        <button type="submit">Add Session</button>
+    </form>
+    <h2>Weekly Plan</h2>
+    <div id="weekly-plan">
+        <!-- Weekly climbing plans will be displayed here -->
+    </div>
+    <h2>Statistics</h2>
+    <div id="statistics">
+        <!-- Statistics will be displayed here -->
+    </div>
+    <h2>Actions</h2>
+    <button id="generate-report">Generate Report</button>
+    <script>
+        const sessionForm = document.getElementById('session-form');
+        sessionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('session-title').value;
+            const date = document.getElementById('session-date').value;
+            const duration = document.getElementById('session-duration').value;
+            // Logic to add session to weekly plan and update statistics
+            console.log(`Session Added: ${title}, Date: ${date}, Duration: ${duration}`);
+        });
+    </script>
 </body>
 </html>
