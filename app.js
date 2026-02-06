@@ -1,27 +1,55 @@
-// JavaScript functionality for the climbing plan web app
+class ClimbingPlanner {
+    constructor() {
+        this.sessions = [];
+        this.statistics = {
+            totalSessions: 0,
+            totalClimbed: 0,
+        };
+    }
 
-// Function to log current date and time
-function logCurrentDateTime() {
-    const now = new Date();
-    console.log(`Current Date and Time (UTC): ${now.toISOString()}`);
+    addSession(date, duration, grade) {
+        const session = { date, duration, grade };
+        this.sessions.push(session);
+        this.statistics.totalSessions += 1;
+        this.statistics.totalClimbed += grade; // Assuming grade is a numerical value
+    }
+
+    renderWeeklyPlans() {
+        const plans = this.sessions.reduce((acc, session) => {
+            const weekNumber = this.getWeekNumber(new Date(session.date));
+            if (!acc[weekNumber]) acc[weekNumber] = [];
+            acc[weekNumber].push(session);
+            return acc;
+        }, {});
+
+        return plans;
+    }
+
+    updateStatistics() {
+        this.statistics.totalSessions = this.sessions.length;
+        this.statistics.totalClimbed = this.sessions.reduce((sum, session) => sum + session.grade, 0);
+    }
+
+    deleteSession(date) {
+        this.sessions = this.sessions.filter(session => session.date !== date);
+        this.updateStatistics();
+    }
+
+    exportPlans() {
+        const planText = this.sessions.map(session => `Date: ${session.date}, Duration: ${session.duration}, Grade: ${session.grade}`).join('\n');
+        return planText;
+    }
+
+    getWeekNumber(d) {
+        const oneJan = new Date(d.getFullYear(), 0, 1);
+        const numberOfDays = Math.floor((d - oneJan) / (24 * 60 * 60 * 1000));
+        return Math.floor((numberOfDays + oneJan.getDay()) / 7) + 1;
+    }
 }
 
-// Function to add a climbing plan
-function addClimbingPlan(plan) {
-    // Logic to add the climbing plan
-    console.log(`Adding climbing plan: ${plan}`);
-}
-
-// Function to display climbing plans
-function displayClimbingPlans(plans) {
-    plans.forEach(plan => {
-        console.log(`Climbing Plan: ${plan}`);
-    });
-}
-
-// Example usage
-logCurrentDateTime();
-
-// Example climbing plans
-const plans = ['Climb Mount Everest', 'Hike in the Alps', 'Rock climb at Joshua Tree'];
-displayClimbingPlans(plans);
+// Example usage:
+const climbingPlanner = new ClimbingPlanner();
+climbingPlanner.addSession('2026-02-01', 2, 5);
+climbingPlanner.addSession('2026-02-02', 1.5, 6);
+console.log(climbingPlanner.renderWeeklyPlans());
+console.log(climbingPlanner.exportPlans());
