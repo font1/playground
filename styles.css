@@ -1,40 +1,53 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .card {
-    background: linear-gradient(135deg, #6e7ff3, #a2aef0);
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 10px 0;
-    padding: 20px;
-    transition: transform 0.3s;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
-    transform: scale(1.05);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
 }
 
-.activity-type {
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, rgba(58, 123, 213, 1) 0%, rgba(255, 136, 0, 1) 100%);
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-.activity-type.success { background: #4caf50; }
-.activity-type.warning { background: #ff9800; }
-.activity-type.danger { background: #f44336; }
-
-.statistics {
-    display: flex;
-    justify-content: space-between;
+h1, h2, h3 {
+  font-weight: 600;
+  color: #6a1b9a;
 }
 
-@media (max-width: 600px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
+button {
+  padding: 10px 20px;
+  background-color: #6a1b9a;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #8e24aa;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 }
