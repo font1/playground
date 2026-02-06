@@ -1,55 +1,87 @@
-class ClimbingPlanner {
-    constructor() {
-        this.sessions = [];
-        this.statistics = {
-            totalSessions: 0,
-            totalClimbed: 0,
-        };
+// Climbing Planner App - Enhanced Functionality
+
+// Session Management
+function saveSession(data) {
+    localStorage.setItem('climbingSessions', JSON.stringify(data));
+}
+
+function loadSessions() {
+    return JSON.parse(localStorage.getItem('climbingSessions')) || [];
+}
+
+// Calculate Weekly Statistics
+function calculateWeeklyStats(sessions) {
+    const weeklyStats = {};
+    sessions.forEach(session => {
+        const week = new Date(session.date).getWeek();
+        weeklyStats[week] = (weeklyStats[week] || 0) + 1; // For example, counting sessions
+    });
+    return weeklyStats;
+}
+
+// Dynamic DOM Rendering with Animations
+function renderSessions(sessions) {
+    const sessionList = document.getElementById('session-list');
+    sessionList.innerHTML = ''; // Clear existing entries
+    sessions.forEach(session => {
+        const li = document.createElement('li');
+        li.textContent = `Session on: ${session.date}`;
+        li.classList.add('fade-in'); // Assuming CSS for animation
+        sessionList.appendChild(li);
+    });
+}
+
+// Form Validation
+function validateForm(form) {
+    const inputs = form.querySelectorAll('input');
+    for (let input of inputs) {
+        if (!input.value) { 
+            alert(`Please fill out ${input.name}`);
+            return false;
+        }
     }
+    return true;
+}
 
-    addSession(date, duration, grade) {
-        const session = { date, duration, grade };
-        this.sessions.push(session);
-        this.statistics.totalSessions += 1;
-        this.statistics.totalClimbed += grade; // Assuming grade is a numerical value
-    }
+// Delete Functionality
+function deleteSession(index) {
+    const sessions = loadSessions();
+    sessions.splice(index, 1);
+    saveSession(sessions);
+    renderSessions(sessions);
+}
 
-    renderWeeklyPlans() {
-        const plans = this.sessions.reduce((acc, session) => {
-            const weekNumber = this.getWeekNumber(new Date(session.date));
-            if (!acc[weekNumber]) acc[weekNumber] = [];
-            acc[weekNumber].push(session);
-            return acc;
-        }, {});
-
-        return plans;
-    }
-
-    updateStatistics() {
-        this.statistics.totalSessions = this.sessions.length;
-        this.statistics.totalClimbed = this.sessions.reduce((sum, session) => sum + session.grade, 0);
-    }
-
-    deleteSession(date) {
-        this.sessions = this.sessions.filter(session => session.date !== date);
-        this.updateStatistics();
-    }
-
-    exportPlans() {
-        const planText = this.sessions.map(session => `Date: ${session.date}, Duration: ${session.duration}, Grade: ${session.grade}`).join('\n');
-        return planText;
-    }
-
-    getWeekNumber(d) {
-        const oneJan = new Date(d.getFullYear(), 0, 1);
-        const numberOfDays = Math.floor((d - oneJan) / (24 * 60 * 60 * 1000));
-        return Math.floor((numberOfDays + oneJan.getDay()) / 7) + 1;
+// Export to PDF/Text
+function exportSessions(format) {
+    const sessions = loadSessions();
+    let data = sessions.map(session => `Session on: ${session.date}`).join('\n');
+  
+    if (format === 'pdf') {
+        // PDF generation code
+    } else {
+        // Text export code
+        const blob = new Blob([data], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'sessions.txt';
+        link.click();
     }
 }
 
-// Example usage:
-const climbingPlanner = new ClimbingPlanner();
-climbingPlanner.addSession('2026-02-01', 2, 5);
-climbingPlanner.addSession('2026-02-02', 1.5, 6);
-console.log(climbingPlanner.renderWeeklyPlans());
-console.log(climbingPlanner.exportPlans());
+// Real-time UI Updates
+function onSessionAdd(session) {
+    const sessions = loadSessions();
+    sessions.push(session);
+    saveSession(sessions);
+    renderSessions(sessions);
+}
+
+// Example of adding session
+document.getElementById('add-session').addEventListener('click', () => {
+    const session = {
+        date: new Date().toISOString().split('T')[0],
+    };
+    if (validateForm(document.getElementById('session-form'))) {
+        onSessionAdd(session);
+    }
+});
