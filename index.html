@@ -3,44 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Climbing Plan Interface</title>
+    <title>Climbing Plan App</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { text-align: center; }
-        form { margin-bottom: 20px; }
-        input, select { padding: 10px; margin: 5px; width: calc(100% - 22px); }
-        button { padding: 10px; width: 100%; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            font-size: 2em;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"], input[type="number"], input[type="date"] {
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6a11cb;
+        }
     </style>
 </head>
 <body>
-    <h1>Climbing Plan Interface</h1>
-    <form id="session-form">
-        <h2>Add Session</h2>
-        <input type="text" id="session-title" placeholder="Session Title" required>
-        <input type="date" id="session-date" required>
-        <input type="number" id="session-duration" placeholder="Duration (minutes)" required>
-        <button type="submit">Add Session</button>
-    </form>
-    <h2>Weekly Plan</h2>
-    <div id="weekly-plan">
-        <!-- Weekly climbing plans will be displayed here -->
+    <header>
+        Climbing Plan App
+    </header>
+    <div class="container">
+        <div class="card">
+            <h2>Bouldering Sessions</h2>
+            <form>
+                <input type="text" placeholder="Session Name" required>
+                <input type="date" required>
+                <input type="number" placeholder="Duration (min)" required>
+                <button type="submit">Add Session</button>
+            </form>
+        </div>
+        <div class="card">
+            <h2>Hangboard Training</h2>
+            <form>
+                <input type="text" placeholder="Exercise" required>
+                <input type="date" required>
+                <input type="number" placeholder="Reps" required>
+                <button type="submit">Add Training</button>
+            </form>
+        </div>
     </div>
-    <h2>Statistics</h2>
-    <div id="statistics">
-        <!-- Statistics will be displayed here -->
-    </div>
-    <h2>Actions</h2>
-    <button id="generate-report">Generate Report</button>
-    <script>
-        const sessionForm = document.getElementById('session-form');
-        sessionForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const title = document.getElementById('session-title').value;
-            const date = document.getElementById('session-date').value;
-            const duration = document.getElementById('session-duration').value;
-            // Logic to add session to weekly plan and update statistics
-            console.log(`Session Added: ${title}, Date: ${date}, Duration: ${duration}`);
-        });
-    </script>
 </body>
 </html>
